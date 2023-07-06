@@ -4,9 +4,9 @@ pipeline {
       inheritFrom 'default'
     }
   }
-  tools {
-    dockerTool 'docker'
-  }
+  // tools {
+  //   dockerTool 'docker'
+  // }
   // options {
   //   buildDiscarder(logRotator(numToKeepStr: '5'))
   // }
