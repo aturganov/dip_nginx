@@ -1,8 +1,35 @@
 pipeline {
   agent {
     kubernetes {
-      inheritFrom 'default'
-      defaultContainer 'deploy'
+        yaml """
+        apiVersion: v1
+        kind: Pod
+        spec:
+            containers:
+            - name: jnlp
+              image: jenkins/inbound-agent:4.10-3-alpine-jdk8
+              volumeMounts:
+              - name: home-volume
+                mountPath: /home/jenkins
+              env:
+              - name: HOME
+                value: /home/jenkins
+            - name: maven
+              image: my-registry:5000/maven-3.6.3-jdk-11:latest
+              command:
+              - sleep
+              args: 
+              - 1d
+              volumeMounts:
+              - name: home-volume
+                mountPath: /home/jenkins
+              env:
+              - name: JAVA_TOOL_OPTIONS
+                value: -Dfile.encoding=UTF8
+            volumes:
+            - name: home-volume
+              emptyDir: {}
+        """
     }
   }
   stages {
