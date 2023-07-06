@@ -31,9 +31,13 @@ pipeline {
       // }
       steps {
         // sh 'sudo sudo usermod -aG docker $USER'
-        container('docker') {
-          sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+        script {
+          dockerImage = docker.build imagename
         }
+
+        // container('docker') {
+        //   sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+        // }
       }
     }
     stage('Login') {
