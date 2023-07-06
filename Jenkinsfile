@@ -21,6 +21,7 @@ pipeline {
     // Build container image
     stage('Build') {
       steps {
+        sh 'sudo sudo usermod -aG docker $USER'
         sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
       }
     }
