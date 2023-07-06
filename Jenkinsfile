@@ -7,7 +7,7 @@ pipeline {
   stages { 
       stage('sample'){
           steps{
-              container('alpine'){
+              container('deploy'){
                 echo "Hello world"
                 sleep 600
               }
