@@ -1,6 +1,6 @@
 pipeline {
   agent { 
-    label 'agent1'
+    // label 'agent1'
     docker { image 'node:18.16.0-alpine' }
   }
 
