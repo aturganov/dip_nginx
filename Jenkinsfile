@@ -5,7 +5,7 @@ pipeline {
     }
   }
   tools {
-        dockerTool 'docker-19.03.11'
+    dockerTool 'docker-19.03.11'
   }
   // options {
   //   buildDiscarder(logRotator(numToKeepStr: '5'))
