@@ -5,7 +5,7 @@ pipeline {
     }
   }
   tools {
-    dockerTool 'docker-19.03.11'
+    dockerTool 'docker'
   }
   // options {
   //   buildDiscarder(logRotator(numToKeepStr: '5'))
@@ -21,7 +21,7 @@ pipeline {
     // Build container image
     stage('Build') {
       steps {
-        sh 'sudo docker build . -t aturganov/nginx-stage2:0.0.3'
+        sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
       }
     }
     stage('Login') {
