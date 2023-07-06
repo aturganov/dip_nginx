@@ -1,8 +1,10 @@
 pipeline {
   environment {
-    registry = "aturganov/nginx-stage2"
-    registryCredential = 'dockerhub-pssw'
-    dockerImage = ''
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    DOCKERHUB_CREDENTIALS_USR = 'aturganov'
+    // registry = "aturganov/nginx-stage2"
+    // registryCredential = 'dockerhub-pssw'
+    // dockerImage = ''
   }
   agent any
   stages {
@@ -13,6 +15,7 @@ pipeline {
     // }
     stage('Test docker') {
       steps{
+        sh "printenv"
         sh "docker version"
       }
     }
@@ -25,14 +28,16 @@ pipeline {
         // }
       }
     }
-    stage('Deploy Image') {
+    stage('Building image') {
       steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
-        }
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
+    }
+    stage('push image') {
+        steps{
+            // sh 'docker push aturganov/nginx-stage2:$BUILD_NUMBER'
+            sh 'docker push aturganov/nginx-stage2:0.0.3'
+        }
     }
     // stage('Remove Unused docker image') {
     //   steps{
