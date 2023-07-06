@@ -1,45 +1,36 @@
 pipeline {
   environment {
-    DOCKER_CERT_PATH = credentials('id-for-a-docker-cred')
     registry = "aturganov/nginx-stage2"
-    registryCredential = 'dockerhub_la'
+    registryCredential = 'dockerhub-pssw'
+    dockerImage = ''
   }
-  agent { 
-    label 'agent1'
-    // docker { image 'node:18.16.0-alpine' }
-  }
-  
-  tools {
-        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' '18.09'
-  }
-  
+  agent any
   stages {
-    // Build container image
-    stage('Build') {
+    // stage('Cloning Git') {
+    //   steps {
+    //     git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
+    //   }
+    // }
+    stage('Building image') {
       steps{
-        sh "docker version"
         script {
-          docker.build registry + ":0.0.3"
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
-      // steps {
-      //   sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
-      // }
     }
-    // stage('Login') {
-    //   steps {
-    //     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    // stage('Remove Unused docker image') {
+    //   steps{
+    //     sh "docker rmi $registry:$BUILD_NUMBER"
     //   }
     // }
-    // stage('Push') {
-    //   steps {
-    //     sh 'docker push aturganov/nginx-stage2:0.0.3'
-    //   }
-    // }
-  }
-  post {
-    always {
-      sh 'docker logout'
-    }
   }
 }
