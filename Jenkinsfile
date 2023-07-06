@@ -4,21 +4,24 @@ pipeline {
       inheritFrom 'default'
     }
   }
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '5'))
+  tools {
+        dockerTool 'docker-19.03.11'
   }
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub_la')
-  }
+  // options {
+  //   buildDiscarder(logRotator(numToKeepStr: '5'))
+  // }
+  // environment {
+  //   DOCKERHUB_CREDENTIALS = credentials('dockerhub_la')
+  // }
 
-  def dockerTool = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-  withEnv(["DOCKER=${dockerTool}/bin"]) 
+  // def dockerTool = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+  // withEnv(["DOCKER=${dockerTool}/bin"]) 
   
   stages {
     // Build container image
     stage('Build') {
       steps {
-        sh 'sudo ${DOCKER}/docker build . -t aturganov/nginx-stage2:0.0.3'
+        sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
       }
     }
     stage('Login') {
