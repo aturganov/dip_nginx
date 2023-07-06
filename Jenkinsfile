@@ -10,11 +10,15 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub_la')
   }
+
+  def dockerTool = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+  withEnv(["DOCKER=${dockerTool}/bin"]) 
+  
   stages {
     // Build container image
     stage('Build') {
       steps {
-        sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+        sh 'sudo ${DOCKER}/docker build . -t aturganov/nginx-stage2:0.0.3'
       }
     }
     stage('Login') {
