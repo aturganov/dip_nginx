@@ -1,7 +1,7 @@
 pipeline {
-  agent {
     kubernetes {
-      containerTemplate { name 'alpine' image 'alpine' command 'tail -f /dev/null'}
+      inheritFrom 'default'
+      defaultContainer 'deploy'
     }
   }
   stages { 
