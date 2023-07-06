@@ -11,7 +11,7 @@ pipeline {
         git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
       }
     }
-    stage('Building image') {
+    stage('Test docker') {
       steps{
         sh "echo docker version"
       }
