@@ -1,7 +1,6 @@
 pipeline {
     kubernetes {
       inheritFrom 'default'
-      defaultContainer 'deploy'
     }
   }
   stages { 
