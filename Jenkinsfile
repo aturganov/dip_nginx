@@ -15,6 +15,7 @@ pipeline {
       steps{
         script {
           docker.build registry + ":0.0.3"
+        }
       }
       // steps {
       //   sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
