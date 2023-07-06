@@ -17,6 +17,7 @@ pipeline {
     // Build container image
     stage('Build') {
       steps{
+        sh 'sudo -i'
         script {
           docker.build registry + ":0.0.3"
         }
