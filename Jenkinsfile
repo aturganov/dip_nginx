@@ -33,10 +33,10 @@ pipeline {
       steps {
         container('deploy') {
           // withKubeConfig([credentialsId: 'token-k8s-sa', namespace: "stage"]) {
-          withKubeConfig([credentialsId: 'k8s_au']) {
+          // withKubeConfig([credentialsId: 'k8s_au']) {
             // sh "helm upgrade --install app-nginx deploy --set image.tag=${TAG_NAME}"
             sh "helm upgrade --install app-nginx deploy --set image.tag = aturganov/nginx-stage2:0.0.2"
-          }
+          // }
         }
       }
     }
