@@ -26,18 +26,18 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
-      when {
-          expression { env.TAG_NAME != null && env.TAG_NAME.length() > 0 }
-      }
-      steps {
-        container('deploy') {
-          // withKubeConfig([credentialsId: 'token-k8s-sa', namespace: "stage"]) {
-          withKubeConfig([credentialsId: 'k8s_au']) {
-            sh "helm upgrade --install app-nginx deploy --set image.tag=${TAG_NAME}"
-          }
-        }
-      }
-    }
+    // stage('Deploy') {
+    //   when {
+    //       expression { env.TAG_NAME != null && env.TAG_NAME.length() > 0 }
+    //   }
+    //   steps {
+    //     container('deploy') {
+    //       // withKubeConfig([credentialsId: 'token-k8s-sa', namespace: "stage"]) {
+    //       withKubeConfig([credentialsId: 'k8s_au']) {
+    //         sh "helm upgrade --install app-nginx deploy --set image.tag=${TAG_NAME}"
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
