@@ -1,10 +1,10 @@
 pipeline {
-  agent any
-//   agent {
-//     kubernetes {
-//       inheritFrom 'default'
-//       defaultContainer 'deploy'
-//     }
+//  agent any
+  agent {
+    kubernetes {
+      inheritFrom 'default'
+      defaultContainer 'deploy'
+    }
   }
   stages {
     //Build container image
