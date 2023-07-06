@@ -1,44 +1,17 @@
 pipeline {
-//  agent any
   agent {
     kubernetes {
-      inheritFrom 'default'
-      defaultContainer 'deploy'
+      containerTemplate { name 'alpine' image 'alpine' command 'tail -f /dev/null'}
     }
   }
-  stages {
-    //Build container image
-    stage('Build') {
-      steps {
-        sh "printenv"
-        container('deploy') {
-          script {
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_la') {
-              def pathTag = "aturganov/nginx-stage2:${JOB_BASE_NAME}"
-              if(env.TAG_NAME == null || env.TAG_NAME.length() == 0) {
-                pathTag = "${pathTag}-${BUILD_ID}"
+  stages { 
+      stage('sample'){
+          steps{
+              container('alpine'){
+                echo "Hello world"
+                sleep 600
               }
-              //build the image
-              def customImage = docker.build(pathTag)
-              //upload it to the registry
-              customImage.push()
-            }
           }
-        }
       }
-    }
-    // stage('Deploy') {
-    //   when {
-    //       expression { env.TAG_NAME != null && env.TAG_NAME.length() > 0 }
-    //   }
-    //   steps {
-    //     container('deploy') {
-    //       // withKubeConfig([credentialsId: 'token-k8s-sa', namespace: "stage"]) {
-    //       withKubeConfig([credentialsId: 'k8s_au']) {
-    //         sh "helm upgrade --install app-nginx deploy --set image.tag=${TAG_NAME}"
-    //       }
-    //     }
-    //   }
-    // }
   }
 }
