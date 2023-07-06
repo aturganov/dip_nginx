@@ -1,4 +1,9 @@
 pipeline {
+
+  environment {
+    registry = "aturganov/nginx-stage2"
+    registryCredential = 'dockerhub_la'
+  }
   agent { 
     label 'agent1'
     // docker { image 'node:18.16.0-alpine' }
@@ -7,10 +12,13 @@ pipeline {
   stages {
     // Build container image
     stage('Build') {
-      agent {docker { image 'node:18.16.0-alpine' }}
-      steps {
-        sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+      steps{
+        script {
+          docker.build registry + ":0.0.3"
       }
+      // steps {
+      //   sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+      // }
     }
     // stage('Login') {
     //   steps {
