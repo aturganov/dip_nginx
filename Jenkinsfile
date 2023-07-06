@@ -1,6 +1,6 @@
 pipeline {
-
   environment {
+    DOCKER_CERT_PATH = credentials('id-for-a-docker-cred')
     registry = "aturganov/nginx-stage2"
     registryCredential = 'dockerhub_la'
   }
@@ -17,7 +17,7 @@ pipeline {
     // Build container image
     stage('Build') {
       steps{
-        sh 'sudo -i'
+        sh "docker version"
         script {
           docker.build registry + ":0.0.3"
         }
