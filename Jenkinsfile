@@ -14,18 +14,6 @@ pipeline {
               env:
               - name: HOME
                 value: /home/jenkins
-            - name: maven
-              image: my-registry:5000/maven-3.6.3-jdk-11:latest
-              command:
-              - sleep
-              args: 
-              - 1d
-              volumeMounts:
-              - name: home-volume
-                mountPath: /home/jenkins
-              env:
-              - name: JAVA_TOOL_OPTIONS
-                value: -Dfile.encoding=UTF8
             volumes:
             - name: home-volume
               emptyDir: {}
