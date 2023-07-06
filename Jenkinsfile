@@ -4,9 +4,9 @@ pipeline {
       inheritFrom 'default'
     }
   }
-  // tools {
-  //   dockerTool 'docker'
-  // }
+  tools {
+    dockerTool 'docker'
+  }
   // options {
   //   buildDiscarder(logRotator(numToKeepStr: '5'))
   // }
@@ -20,19 +20,20 @@ pipeline {
   stages {
     // Build container image
     stage('Build') {
-      agent {
-                docker {
-                    image 'gradle:6.7-jdk11'
-                    // Run the container on the node specified at the
-                    // top-level of the Pipeline, in the same workspace,
-                    // rather than on a new node entirely:
-                    reuseNode true
-                }
-      }
+      // agent {
+      //           docker {
+      //               image 'gradle:6.7-jdk11'
+      //               // Run the container on the node specified at the
+      //               // top-level of the Pipeline, in the same workspace,
+      //               // rather than on a new node entirely:
+      //               reuseNode true
+      //           }
+      // }
       steps {
-        sh 'gradle --version'
         // sh 'sudo sudo usermod -aG docker $USER'
-        sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+        container('docker') {
+          sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
+        }
       }
     }
     stage('Login') {
