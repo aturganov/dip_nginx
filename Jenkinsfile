@@ -1,12 +1,13 @@
 pipeline {
   agent { 
-    // label 'agent1'
-    docker { image 'node:18.16.0-alpine' }
+    label 'agent1'
+    // docker { image 'node:18.16.0-alpine' }
   }
 
   stages {
     // Build container image
     stage('Build') {
+      agent {docker { image 'node:18.16.0-alpine' }}
       steps {
         sh 'docker build . -t aturganov/nginx-stage2:0.0.3'
       }
