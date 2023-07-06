@@ -28,6 +28,7 @@ pipeline {
                     // rather than on a new node entirely:
                     reuseNode true
                 }
+      }
       steps {
         sh 'gradle --version'
         // sh 'sudo sudo usermod -aG docker $USER'
