@@ -13,6 +13,11 @@ pipeline {
     }
     stage('Building image') {
       steps{
+        sh "echo docker version"
+      }
+    }
+    stage('Building image') {
+      steps{
         script {
           // dockerImage = docker.build registry + ":$BUILD_NUMBER"
           dockerImage = docker.build registry + "0.0.3"
