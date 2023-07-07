@@ -26,7 +26,7 @@ pipeline {
         sh "docker build . -t aturganov/app-nginx:0.0.4"
       }
     }
-    stage('push image') {
+    stage('Push building image app-nginx') {
         steps {
           // docker login
           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
