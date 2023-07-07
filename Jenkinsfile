@@ -21,6 +21,11 @@ pipeline {
         sh "helm version"
       }
     }
+    stage('Prepare image') {
+      steps{
+        sh './gen_index.sh "0.0.$BUILD_NUMBER"'
+      }
+    }
     stage('Building image app-nginx') {
       steps{
         sh "docker build . -t aturganov/app-nginx:0.0.$BUILD_NUMBER"

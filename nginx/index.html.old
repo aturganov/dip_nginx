@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <title>NGINX</title>
+  </head>
+  <body>
+    <h2>Дипломная работа</h2>
+    <img src="main.jpg" name="Велосипеды" align="center" width="600" height="350"  border="0"/> 
+    <h4>Автор: Турганов Артем</h4>
+    <h4>v0.0.5</h4>
+  </body>
+</html>
