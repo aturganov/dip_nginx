@@ -5,9 +5,10 @@ pipeline {
   }
   agent any
   stages {
+    // Не требуется в опции pipline
     // stage('Cloning Git') {
     //   steps {
-    //     git 'https://github.com/aturganov/nginx-stage2.git'
+    //     git 'https://github.com/aturganov/dip_nginx.git'
     //   }
     // }
     stage('Prerequisites') {
@@ -15,7 +16,8 @@ pipeline {
         sh "printenv"
         sh "docker version"
         sh "docker-compose version"
-        sh "kubectl version"
+        // Если kubectl не имеет подключения к кластеру очередь остановится
+        sh "kubectl info"
         sh "helm version"
       }
     }
@@ -24,16 +26,26 @@ pipeline {
         sh "docker build . -t aturganov/app-nginx:0.0.4"
       }
     }
-    stage('Dockerhub login') {
-      steps{
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
-    }
     stage('push image') {
         steps {
-            sh "docker push aturganov/app-nginx:0.0.4"
+          // docker login
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+          sh "docker push aturganov/app-nginx:0.0.4"
         }
     }
+
+    /// Helm -> kube
+    stage('helm deploy app') {
+        steps {
+            sh "helm template ./helm/charts/app-nginx"
+            //Создаем при необходимости namespace
+            sh "kubectl create ns stage --dry-run=client"
+            sh "helm upgrade --install app-nginx ./helm/charts/app-nginx"
+            sh "kubectl get all -n stage"
+        }
+    }
+
+
     // stage('Remove Unused docker image') {
     //   steps{
     //     sh "docker rmi $registry:$BUILD_NUMBER"
