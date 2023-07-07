@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    // DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     DOCKERHUB_CREDENTIALS_USR = 'aturganov'
   }
   agent any
@@ -17,7 +17,7 @@ pipeline {
         sh "docker version"
         sh "docker-compose version"
         // Если kubectl не имеет подключения к кластеру очередь остановится
-        sh "kubectl info"
+        sh "kubectl cluster-info"
         sh "helm version"
       }
     }
