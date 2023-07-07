@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-nginx-{{ .Release.Name }}
+  name: {{ .Release.Name }}
   namespace: stage
   labels:
     app.kubernetes.io/name: app-nginx
@@ -16,8 +16,8 @@ spec:
         app.kubernetes.io/name: app-nginx
     spec:
       containers:
-      - name: app-nginx
-        image: {{ .Values.app_nginx_deployment.image.repository }}
+      - name: "app-nginx"
+        image: "{{ .Values.app_nginx_deployment.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: IfNotPresent
         resources:
           requests:
