@@ -35,7 +35,7 @@ pipeline {
     }
 
     /// Helm -> kube
-    stage('helm deploy app to k8s') {
+    stage('Helm deploy app to k8s') {
         steps {
             sh "helm template ./helm/charts/app-nginx"
             //Создаем при необходимости namespace
