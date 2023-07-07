@@ -2,7 +2,7 @@ replicaCount: 1
 
 app_nginx_deployment:
   image:
-    repository: aturganov/app-nginx
+    name: aturganov/app-nginx
     tag: 0.0.8
   resources:
     requests: 
