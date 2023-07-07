@@ -40,7 +40,7 @@ pipeline {
             sh "helm template ./helm/charts/app-nginx"
             //Создаем при необходимости namespace
             sh "kubectl create ns stage --dry-run=client"
-            sh "helm upgrade --install app-nginx ./helm/charts/app-nginx -n stage"
+            sh "helm upgrade --install app-nginx ./helm/charts/app-nginx"
             sh "kubectl get all -n stage"
         }
     }
