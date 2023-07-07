@@ -2,8 +2,8 @@ replicaCount: 1
 
 app_nginx_deployment:
   image:
-    repository: aturganov/app-nginx:0.0.4
-    tag: latest
+    repository: aturganov/app-nginx
+    tag: 0.0.4
   resources:
     requests: 
       memory: "80Mi"

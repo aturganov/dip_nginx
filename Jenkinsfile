@@ -23,14 +23,14 @@ pipeline {
     }
     stage('Building image app-nginx') {
       steps{
-        sh "docker build . -t aturganov/app-nginx:0.0.4"
+        sh "docker build . -t aturganov/app-nginx:0.0.$BUILD_NUMBER"
       }
     }
     stage('Push building image app-nginx') {
         steps {
           // docker login
           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-          sh "docker push aturganov/app-nginx:0.0.4"
+          sh "docker push aturganov/app-nginx:0.0.$BUILD_NUMBER"
         }
     }
 
@@ -40,7 +40,7 @@ pipeline {
             sh "helm template ./helm/charts/app-nginx"
             //Создаем при необходимости namespace
             sh "kubectl create ns stage --dry-run=client"
-            sh "helm upgrade --install app-nginx ./helm/charts/app-nginx"
+            sh "helm upgrade --install app-nginx ./helm/charts/app-nginx --set=image.tag=0.0.$BUILD_NUMBER"
             sh "kubectl get all -n stage"
         }
     }
