@@ -8,7 +8,7 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     DOCKERHUB_CREDENTIALS_USR = 'aturganov'
   }
-  agent any
+  
   stages {
     stage('Test docker') {
       steps{
