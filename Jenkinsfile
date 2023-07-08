@@ -1,7 +1,9 @@
 pipeline {
-  kubernetes {
-    inheritFrom 'default'
-  }
+  agent{
+    kubernetes {
+      inheritFrom 'default'
+    }
+  }  
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     DOCKERHUB_CREDENTIALS_USR = 'aturganov'
