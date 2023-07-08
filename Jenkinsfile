@@ -30,7 +30,7 @@ pipeline {
             sh 'echo Push image'
         }
     }
-    stage('Remove Unused docker image') {
+    stage('Deploy image') {
       steps{
         sh "echo Deploy image"
       }
