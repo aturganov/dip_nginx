@@ -16,7 +16,7 @@ pipeline {
     stage('Test docker') {
       steps{
         sh "printenv"
-        sh "docker version"
+        // sh "docker version"
       }
     }
     stage('Building image') {
