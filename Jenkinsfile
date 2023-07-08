@@ -6,29 +6,33 @@ pipeline {
   }  
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub_la')
-    DOCKERHUB_CREDENTIALS_USR = 'aturganov'
+  }
+  
+  tools {
+        dockerTool 'docker'
   }
 
   stages {
-    // stage('Test docker') {
-    //   steps{
-    //     sh "printenv"
-    //     sh "docker version"
-    //   }
-    // }
+    stage('Test docker') {
+      steps{
+        sh "printenv"
+        sh "docker version"
+      }
+    }
     stage('Building image') {
       steps{
-        sh "docker build"
+        // sh "docker build"
+        sh "echo docker build"
       }
     }
     stage('Push image') {
         steps{
-            sh 'Push image'
+            sh 'echo Push image'
         }
     }
     stage('Remove Unused docker image') {
       steps{
-        sh "Deploy image"
+        sh "echo Deploy image"
       }
     }
   }
