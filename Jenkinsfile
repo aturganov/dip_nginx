@@ -5,7 +5,7 @@ pipeline {
     }
   }  
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub_la')
     DOCKERHUB_CREDENTIALS_USR = 'aturganov'
   }
 
