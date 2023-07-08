@@ -8,14 +8,14 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     DOCKERHUB_CREDENTIALS_USR = 'aturganov'
   }
-  
+
   stages {
-    stage('Test docker') {
-      steps{
-        sh "printenv"
-        sh "docker version"
-      }
-    }
+    // stage('Test docker') {
+    //   steps{
+    //     sh "printenv"
+    //     sh "docker version"
+    //   }
+    // }
     stage('Building image') {
       steps{
         sh "docker build"
