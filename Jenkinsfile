@@ -24,7 +24,7 @@ pipeline {
     {
       when {
           expression {
-            tag "0.0.1" 
+            return tag "0.0.1" 
       //         return !isVersionTag(readCurrentTag())           
           }
       }
