@@ -22,12 +22,7 @@ pipeline {
 
     stage('Test tag')
     {
-      when {
-          expression {
-            return tag "0.0.1" 
-      //         return !isVersionTag(readCurrentTag())           
-          }
-      }
+      when { tag "0.0.1" }
       steps{
         sh 'tag'
       }      
