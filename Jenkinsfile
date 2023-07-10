@@ -22,40 +22,42 @@ pipeline {
     
     stage('Prepare image') {
       // Выбераем JOB_TAG (с jenkins), если сборка прилетела с ветки и TAG_NAME (c гита), если прилетел TAG 
-      if (env.TAG_NAME != null) {
-        tag = env.TAG_NAME
-      } else {
-        tag = env.BUILD_TAG
-      }
       steps {
+        scripts {
+          if (env.TAG_NAME != null) {
+            tag = env.TAG_NAME
+          } else {
+            tag = env.BUILD_TAG
+          }
+        }      
         sh './gen_index.sh "${tag}"'
       }
     }
 
-    stage('Building image app-nginx') {
-      steps{
-        sh "docker build . -t aturganov/app-nginx:$BUILD_TAG"
-      }
-    }
+    // stage('Building image app-nginx') {
+    //   steps{
+    //     sh "docker build . -t aturganov/app-nginx:$BUILD_TAG"
+    //   }
+    // }
     
-    stage('Push building image app-nginx') {
-        steps {
-          // docker login
-          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_USER --password-stdin'
-          sh "docker push aturganov/app-nginx:$BUILD_TAG"
-        }
-    }
+    // stage('Push building image app-nginx') {
+    //     steps {
+    //       // docker login
+    //       sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_USER --password-stdin'
+    //       sh "docker push aturganov/app-nginx:$BUILD_TAG"
+    //     }
+    // }
 
-    /// Helm -> kube
-    stage('Helm deploy app to k8s') {
-      expression { env.TAG_NAME != null }
-      steps {
-          sh "helm template ./helm/charts/app-nginx"
-          //Создаем при необходимости namespace
-          sh "kubectl create ns stage --dry-run=client"
-          sh "helm upgrade --install app-nginx ./helm/charts/app-nginx --set=app_nginx_deployment.image.tag=$TAG_NAME"
-          sh "kubectl get all -n stage"
-      }
-    }
+    // /// Helm -> kube
+    // stage('Helm deploy app to k8s') {
+    //   expression { env.TAG_NAME != null }
+    //   steps {
+    //       sh "helm template ./helm/charts/app-nginx"
+    //       //Создаем при необходимости namespace
+    //       sh "kubectl create ns stage --dry-run=client"
+    //       sh "helm upgrade --install app-nginx ./helm/charts/app-nginx --set=app_nginx_deployment.image.tag=$TAG_NAME"
+    //       sh "kubectl get all -n stage"
+    //   }
+    // }
   }
 }
