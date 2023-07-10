@@ -9,16 +9,16 @@ pipeline {
   }
   agent any
   stages {
-    // stage('Prerequisites') {
-    //   steps{
-    //     sh "printenv"
+    stage('Prerequisites') {
+      steps{
+        sh "printenv"
     //     sh "docker version"
     //     sh "docker-compose version"
     //     // Если kubectl не имеет подключения к кластеру очередь остановится
     //     sh "kubectl cluster-info"
     //     sh "helm version"
-    //   }
-    // }
+      }
+    }
 
     stage('Test tag')
     {
