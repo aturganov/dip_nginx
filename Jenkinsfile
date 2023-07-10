@@ -22,7 +22,7 @@ pipeline {
 
     stage('Test tag')
     {
-      when { tag "0.1.2" }
+      when { tag "0.1.1" }
       steps{
         sh 'tag'
       }      
