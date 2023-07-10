@@ -1,6 +1,3 @@
-// Добавим отслеживание TAG events
-// https://stackoverflow.com/questions/48363217/execute-jenkins-pipeline-step-only-when-building-a-tag
-
 pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
