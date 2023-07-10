@@ -51,7 +51,9 @@ pipeline {
 
     /// Helm -> kube
     stage('Helm deploy app to k8s') {
-      expression { env.TAG_NAME != null }
+      when {
+        expression { env.TAG_NAME != null }
+      }
       steps {
           sh "helm template ./helm/charts/app-nginx"
           //Создаем при необходимости namespace
