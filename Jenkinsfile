@@ -25,11 +25,11 @@ pipeline {
       // Выбераем JOB_TAG (с jenkins), если сборка прилетела с ветки и TAG_NAME (c гита), если прилетел TAG 
       steps {
         if (env.TAG_NAME != null) {
-          tag = env.TAG_NAME
+          sh './gen_index.sh "${TAG_NAME}"'
         } else {
-          tag = env.BUILD_TAG
+          sh './gen_index.sh "${BUILD_TAG}"'
         }
-        sh './gen_index.sh "${tag}"'
+        
       }
     }
 
