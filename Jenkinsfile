@@ -24,13 +24,11 @@ pipeline {
     stage('Prepare image') {
       // Выбераем JOB_TAG (с jenkins), если сборка прилетела с ветки и TAG_NAME (c гита), если прилетел TAG 
       steps {
-        scripts {
-          if (env.TAG_NAME != null) {
-            tag = env.TAG_NAME
-          } else {
-            tag = env.BUILD_TAG
-          }
-        }      
+        if (env.TAG_NAME != null) {
+          tag = env.TAG_NAME
+        } else {
+          tag = env.BUILD_TAG
+        }
         sh './gen_index.sh "${tag}"'
       }
     }
