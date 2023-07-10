@@ -8,6 +8,7 @@ pipeline {
     DOCKERHUB_USER = 'aturganov'
   }
   agent any
+  
   stages {
     stage('Prerequisites') {
       steps{
