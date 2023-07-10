@@ -5,7 +5,7 @@
 pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    DOCKERHUB_CREDENTIALS_USR = 'aturganov'
+    DOCKERHUB_USER = 'aturganov'
   }
   agent any
   stages {
@@ -15,49 +15,47 @@ pipeline {
     //     sh "docker version"
     //     sh "docker-compose version"
     //     // Если kubectl не имеет подключения к кластеру очередь остановится
-    //     sh "kubectl cluster-info"
+        sh "kubectl cluster-info"
     //     sh "helm version"
+      }
+    }    
+    
+    stage('Prepare image') {
+      // Выбераем JOB_TAG (с jenkins), если сборка прилетела с ветки и TAG_NAME (c гита), если прилетел TAG 
+      if (env.TAG_NAME != null) {
+        tag = env.TAG_NAME
+      } else {
+        tag = env.BUILD_TAG
+      }
+      steps {
+        sh './gen_index.sh "${tag}"'
       }
     }
 
-    stage('Test tag')
-    {
-      when { tag "v*" }
+    stage('Building image app-nginx') {
       steps{
-        sh 'tag'
-      }      
+        sh "docker build . -t aturganov/app-nginx:$BUILD_TAG"
+      }
     }
-    // stage('Prepare image') {
-    //   when {
-    //     buildingTag()
-    //     beforeAgent true
-    //   }
-    //   steps{
-    //     sh './gen_index.sh "0.0.$BUILD_NUMBER"'
-    //   }
-    // }
-    // stage('Building image app-nginx') {
-    //   steps{
-    //     sh "docker build . -t aturganov/app-nginx:0.0.$BUILD_NUMBER"
-    //   }
-    // }
-    // stage('Push building image app-nginx') {
-    //     steps {
-    //       // docker login
-    //       sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-    //       sh "docker push aturganov/app-nginx:0.0.$BUILD_NUMBER"
-    //     }
-    // }
+    
+    stage('Push building image app-nginx') {
+        steps {
+          // docker login
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_USER --password-stdin'
+          sh "docker push aturganov/app-nginx:$BUILD_TAG"
+        }
+    }
 
-    // /// Helm -> kube
-    // stage('Helm deploy app to k8s') {
-    //     steps {
-    //         sh "helm template ./helm/charts/app-nginx"
-    //         //Создаем при необходимости namespace
-    //         sh "kubectl create ns stage --dry-run=client"
-    //         sh "helm upgrade --install app-nginx ./helm/charts/app-nginx --set=app_nginx_deployment.image.tag=0.0.$BUILD_NUMBER"
-    //         sh "kubectl get all -n stage"
-    //     }
-    // }
+    /// Helm -> kube
+    stage('Helm deploy app to k8s') {
+      expression { env.TAG_NAME != null }
+      steps {
+          sh "helm template ./helm/charts/app-nginx"
+          //Создаем при необходимости namespace
+          sh "kubectl create ns stage --dry-run=client"
+          sh "helm upgrade --install app-nginx ./helm/charts/app-nginx --set=app_nginx_deployment.image.tag=$TAG_NAME"
+          sh "kubectl get all -n stage"
+      }
+    }
   }
 }
