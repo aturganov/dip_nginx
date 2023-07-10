@@ -21,13 +21,13 @@ pipeline {
 
     stage('Test tag')
     {
-      when {
-          expression {
-              return !isVersionTag(readCurrentTag())           
-          }
-      }
+      // when {
+      //     expression {
+      //         return !isVersionTag(readCurrentTag())           
+      //     }
+      // }
       steps{
-        sh 'echo building tags'
+        sh tag
       }      
     }
     // stage('Prepare image') {
