@@ -38,19 +38,12 @@ pipeline {
     stage('Building image app-nginx') {
       steps{
         sh "docker build . -t aturganov/app-nginx:$BUILD_TAG"
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_USER --password-stdin'
+        sh "docker push aturganov/app-nginx:$BUILD_TAG"
       }
-    }
-    
-    stage('Push building image app-nginx') {
-        steps {
-          // docker login
-          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_USER --password-stdin'
-          sh "docker push aturganov/app-nginx:$BUILD_TAG"
-        }
-    }
+    }  
 
-    /// Helm -> kube
-    stage('Helm deploy app to k8s') {
+    stage('Deploy app to k8s') {
       when {
         expression { env.TAG_NAME != null }
       }
