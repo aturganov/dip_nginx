@@ -1,4 +1,5 @@
 // Добавим отслеживание TAG events
+// https://www.jenkins.io/blog/2018/05/16/pipelines-with-git-tags/
 // https://stackoverflow.com/questions/48363217/execute-jenkins-pipeline-step-only-when-building-a-tag
 
 pipeline {
@@ -23,7 +24,7 @@ pipeline {
     {
       when {
           expression {
-            tag "*" 
+            tag "0.0.1" 
       //         return !isVersionTag(readCurrentTag())           
           }
       }
